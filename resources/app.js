@@ -3,19 +3,28 @@ var data;
 
 function loadData() {
 	var targetUrl = 'http://d345h07ts0fu2m.cloudfront.net/379/data48.json';
-	var proxy = 'http://cors.io/?u=';
-    var xhttp;
-    xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-       		eval(xhttp.responseText)
-            // removes the loading animation
-            var child = document.getElementsByClassName('loader')[0];
-			document.body.removeChild(child);
-        }
-    }
-    xhttp.open("GET", proxy + targetUrl, true);
-    xhttp.send();
+	// var proxy = 'http://cors.io/?u=';
+ //    var xhttp;
+ //    xhttp = new XMLHttpRequest();
+ //    xhttp.onreadystatechange = function() {
+ //        if (xhttp.readyState == 4 && xhttp.status == 200) {
+ //       		eval(xhttp.responseText)
+   //          // removes the loading animation
+   //          var child = document.getElementsByClassName('loader')[0];
+			// document.body.removeChild(child);
+ //        }
+ //    }
+ //    xhttp.open('GET', targetUrl, true);
+ //    xhttp.send();
+
+ 	// have to use JSONP to overcome CORS and proxy issues
+	var tag = document.createElement('script'); 
+	tag.src = targetUrl; 
+	document.getElementsByTagName('head')[0].appendChild(tag);
+	// removes the loading animation
+	var child = document.getElementsByClassName('loader')[0];
+	document.body.removeChild(child);
+
 }
 
 
@@ -51,7 +60,7 @@ function launchLightbox() {
 	var modal = document.getElementsByClassName('modalDialog')[0];
 	modal.className += ' modalDialog-active';
 	// add event listener for escape key to close
-	document.addEventListener("keydown", function(event) {
+	document.addEventListener('keydown', function(event) {
 		if (event.keyCode == 27) {
 			closeLightbox();
 		}
@@ -175,7 +184,7 @@ function cmsCallback (dataObj) {
 
 	for (i = 0; i < data.length; i++) {
 		//filter on catagory id, assuming 1401 is only Hispanic Heritage related category_id
-		if (data[i].category_id === "1401") {
+		if (data[i].category_id === '1401') {
 
 			var card = document.createElement('div');
 			card.className = 'card';
@@ -212,7 +221,7 @@ function cmsCallback (dataObj) {
 
 loadData();
 
-document.body.addEventListener("click", function(event){
+document.body.addEventListener('click', function(event){
 	updateListener(event.target.id || event.srcElement.id)
 });
 
